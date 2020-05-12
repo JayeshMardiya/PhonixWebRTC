@@ -1,0 +1,24 @@
+PODS:
+  - GoogleWebRTC (1.1.29400)
+  - Starscream (3.1.1)
+  - SwiftPhoenixClient (1.2.1):
+    - Starscream (~> 3.1.0)
+
+DEPENDENCIES:
+  - GoogleWebRTC
+  - SwiftPhoenixClient
+
+SPEC REPOS:
+  trunk:
+    - GoogleWebRTC
+    - Starscream
+    - SwiftPhoenixClient
+
+SPEC CHECKSUMS:
+  GoogleWebRTC: cfb83bc346435a17fe06bb05f04ad826b858a7fb
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
+  SwiftPhoenixClient: 259aba446df6329d6bf9ac794dccb8228eedf19c
+
+PODFILE CHECKSUM: 9a86c69fe19e9259b1817ef671a536b7b4e622b4
+
+COCOAPODS: 1.8.4
