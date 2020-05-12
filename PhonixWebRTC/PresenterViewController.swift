@@ -19,7 +19,7 @@ class PresenterViewController: UIViewController {
     
     let udid: String = UIDevice.current.identifierForVendor!.uuidString
     var socket: Socket? = nil
-    var topic: String = "room:conf1"
+    var topic: String = "room:conf2"
     var lobbyChannel: Channel!
     
     // WebRTC

@@ -19,7 +19,7 @@ class ListenerViewController: UIViewController {
     
     let udid: String = UIDevice.current.identifierForVendor!.uuidString
     var socket: Socket? = nil
-    var topic: String = "room:conf1"
+    var topic: String = "room:conf2"
     var lobbyChannel: Channel!
     
     // WebRTC
@@ -116,10 +116,9 @@ class ListenerViewController: UIViewController {
                 let dataMessage = try self.encoder.encode(messageSDP)
                 let json = try JSONSerialization.jsonObject(with: dataMessage, options: []) as? [String : Any]
 
-                let payload = ["listener_msg": ["offer": json]]
                 // this.channel.push("listener_msg", {a: 1, b: 2, c: 3})
                 self.lobbyChannel
-                    .push("listener_msg", payload: payload)
+                    .push("offer", payload: json ?? [:])
                     .receive("ok") { (message) in
                         print("success", message)
                 }
@@ -166,7 +165,7 @@ class ListenerViewController: UIViewController {
             
             if let response = message.payload["response"] as? [String: Any] {
                 print(response)
-                if let status = response["speaker_status"] as? String {
+                if let speaker_status = response["speaker_status"] as? [String: Any], let status = speaker_status["status"] as? String {
                     if status == "online" {
                         self.sendOffer(to: self.udid)
                     }
