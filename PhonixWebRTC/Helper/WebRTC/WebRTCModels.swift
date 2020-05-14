@@ -10,13 +10,13 @@ import Foundation
 
 struct SignalingMessage: Codable {
     let type: String
-    let sessionDescription: SDP?
+    let sessionDescription: RemoteSDP?
     let candidate: Candidate?
     let password: String?
     let allowRecording: Bool?
     
     init(type: String,
-         sessionDescription: SDP? = nil,
+         sessionDescription: RemoteSDP? = nil,
          candidate: Candidate? = nil,
          password: String? = nil,
          allowRecording: Bool = false) {

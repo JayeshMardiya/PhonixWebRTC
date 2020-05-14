@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Presenter View Controller-->
+        <scene sceneID="4tK-fj-In4">
+            <objects>
+                <viewController storyboardIdentifier="PresenterViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eNN-vY-8Hl" customClass="PresenterViewController" customModule="PhonixWebRTC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="kqI-JW-cA2">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8pP-Bu-Wu5">
+                                <rect key="frame" x="40" y="421" width="334" height="54"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="54" id="T6X-BB-0Ql"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                <state key="normal" title="Connect">
+                                    <color key="titleColor" red="0.1960784314" green="0.23921568630000001" blue="0.51372549020000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="27"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onConnectButtonPressed:" destination="eNN-vY-8Hl" eventType="touchUpInside" id="Ne3-LJ-BRN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gZd-As-MPa">
+                                <rect key="frame" x="8" y="56" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="ZM2-ux-d3q"/>
+                                    <constraint firstAttribute="width" constant="30" id="xLN-NM-gO9"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="chevron.left" catalog="system"/>
+                                <connections>
+                                    <action selector="onBackButtonPressed:" destination="eNN-vY-8Hl" eventType="touchUpInside" id="XO0-Vs-FPd"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.23529411759999999" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="gZd-As-MPa" firstAttribute="top" secondItem="6US-RY-sAg" secondAttribute="top" constant="12" id="7Ck-x6-6Jy"/>
+                            <constraint firstItem="8pP-Bu-Wu5" firstAttribute="leading" secondItem="6US-RY-sAg" secondAttribute="leading" constant="40" id="H61-s4-gfp"/>
+                            <constraint firstItem="8pP-Bu-Wu5" firstAttribute="centerY" secondItem="kqI-JW-cA2" secondAttribute="centerY" id="HFP-aG-H54"/>
+                            <constraint firstItem="8pP-Bu-Wu5" firstAttribute="centerX" secondItem="kqI-JW-cA2" secondAttribute="centerX" id="WkX-7H-50Y"/>
+                            <constraint firstItem="gZd-As-MPa" firstAttribute="leading" secondItem="6US-RY-sAg" secondAttribute="leading" constant="8" id="gG6-4b-T2U"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6US-RY-sAg"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ZMz-CJ-7PG"/>
+                    <connections>
+                        <outlet property="connectButton" destination="8pP-Bu-Wu5" id="7hO-Cr-lVW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zlg-Sr-F8X" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1851" y="538"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="chevron.left" catalog="system" width="96" height="128"/>
+    </resources>
+</document>

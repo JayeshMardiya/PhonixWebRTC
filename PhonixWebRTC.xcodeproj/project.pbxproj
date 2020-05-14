@@ -7,6 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0711CAAE246D703F00363416 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CA9D246D703F00363416 /* Array+Extensions.swift */; };
+		0711CAAF246D703F00363416 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CA9E246D703F00363416 /* Int+Extensions.swift */; };
+		0711CAB0246D703F00363416 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CA9F246D703F00363416 /* UIViewController+Extensions.swift */; };
+		0711CAB2246D703F00363416 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAA1246D703F00363416 /* UIView+Extensions.swift */; };
+		0711CAB3246D703F00363416 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAA2246D703F00363416 /* String+Extensions.swift */; };
+		0711CAB4246D703F00363416 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAA3246D703F00363416 /* UIColor+Extensions.swift */; };
+		0711CAB5246D703F00363416 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAA4246D703F00363416 /* ActivityIndicator.swift */; };
+		0711CAB6246D703F00363416 /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAA5246D703F00363416 /* RoundedView.swift */; };
+		0711CAB7246D703F00363416 /* Codable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAA6246D703F00363416 /* Codable+Extensions.swift */; };
+		0711CAB8246D703F00363416 /* UITableviewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAA7246D703F00363416 /* UITableviewCell+Extension.swift */; };
+		0711CAB9246D703F00363416 /* UIStoryboard+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAA8246D703F00363416 /* UIStoryboard+Extensions.swift */; };
+		0711CABB246D703F00363416 /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAAA246D703F00363416 /* RoundedTextField.swift */; };
+		0711CABC246D703F00363416 /* RoundedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAAB246D703F00363416 /* RoundedLabel.swift */; };
+		0711CABD246D703F00363416 /* FileUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAAC246D703F00363416 /* FileUtils.swift */; };
+		0711CABE246D703F00363416 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAAD246D703F00363416 /* RoundedButton.swift */; };
+		0711CAC3246D70AA00363416 /* PresenterViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0711CAC2246D70AA00363416 /* PresenterViewController.storyboard */; };
+		0711CAC5246D712800363416 /* ListenerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0711CAC4246D712800363416 /* ListenerViewController.storyboard */; };
+		0711CAC7246D72A700363416 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAC6246D72A700363416 /* Log.swift */; };
+		0711CAC9246D74AA00363416 /* PresenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAC8246D74AA00363416 /* PresenterViewController.swift */; };
+		0711CACC246DD77100363416 /* JoinResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CACB246DD77100363416 /* JoinResponse.swift */; };
 		1A26307C246AA6BB00028303 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A26307B246AA6BB00028303 /* AppDelegate.swift */; };
 		1A263080246AA6BB00028303 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A26307F246AA6BB00028303 /* ViewController.swift */; };
 		1A263083246AA6BB00028303 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A263081246AA6BB00028303 /* Main.storyboard */; };
@@ -21,12 +41,31 @@
 		1A2630B1246ABDCC00028303 /* StarscreamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2630A4246ABDCB00028303 /* StarscreamProvider.swift */; };
 		1A2630B4246ABF5E00028303 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2630B3246ABF5E00028303 /* Message.swift */; };
 		1A2630B6246ABF8000028303 /* SessionDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2630B5246ABF8000028303 /* SessionDescription.swift */; };
-		1ACFD950246AEC7F0030DCB5 /* PresenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACFD94F246AEC7F0030DCB5 /* PresenterViewController.swift */; };
 		1ACFD952246AEC860030DCB5 /* ListenerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACFD951246AEC860030DCB5 /* ListenerViewController.swift */; };
 		A0CE0C82A3A669D4FD0E8B49 /* Pods_PhonixWebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E123CA366DBAC2065D6D5C /* Pods_PhonixWebRTC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0711CA9D246D703F00363416 /* Array+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		0711CA9E246D703F00363416 /* Int+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
+		0711CA9F246D703F00363416 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		0711CAA1246D703F00363416 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		0711CAA2246D703F00363416 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		0711CAA3246D703F00363416 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		0711CAA4246D703F00363416 /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		0711CAA5246D703F00363416 /* RoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
+		0711CAA6246D703F00363416 /* Codable+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Codable+Extensions.swift"; sourceTree = "<group>"; };
+		0711CAA7246D703F00363416 /* UITableviewCell+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableviewCell+Extension.swift"; sourceTree = "<group>"; };
+		0711CAA8246D703F00363416 /* UIStoryboard+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extensions.swift"; sourceTree = "<group>"; };
+		0711CAAA246D703F00363416 /* RoundedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
+		0711CAAB246D703F00363416 /* RoundedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedLabel.swift; sourceTree = "<group>"; };
+		0711CAAC246D703F00363416 /* FileUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileUtils.swift; sourceTree = "<group>"; };
+		0711CAAD246D703F00363416 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		0711CAC2246D70AA00363416 /* PresenterViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PresenterViewController.storyboard; sourceTree = "<group>"; };
+		0711CAC4246D712800363416 /* ListenerViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ListenerViewController.storyboard; sourceTree = "<group>"; };
+		0711CAC6246D72A700363416 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		0711CAC8246D74AA00363416 /* PresenterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenterViewController.swift; sourceTree = "<group>"; };
+		0711CACB246DD77100363416 /* JoinResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinResponse.swift; sourceTree = "<group>"; };
 		1A263078246AA6BB00028303 /* PhonixWebRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhonixWebRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A26307B246AA6BB00028303 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A26307F246AA6BB00028303 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -43,7 +82,6 @@
 		1A2630A4246ABDCB00028303 /* StarscreamProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarscreamProvider.swift; sourceTree = "<group>"; };
 		1A2630B3246ABF5E00028303 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		1A2630B5246ABF8000028303 /* SessionDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionDescription.swift; sourceTree = "<group>"; };
-		1ACFD94F246AEC7F0030DCB5 /* PresenterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterViewController.swift; sourceTree = "<group>"; };
 		1ACFD951246AEC860030DCB5 /* ListenerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerViewController.swift; sourceTree = "<group>"; };
 		328443D3771BEA132F2EEE4E /* Pods-PhonixWebRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhonixWebRTC.release.xcconfig"; path = "Target Support Files/Pods-PhonixWebRTC/Pods-PhonixWebRTC.release.xcconfig"; sourceTree = "<group>"; };
 		6A8999453C24DC5718777046 /* Pods-PhonixWebRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhonixWebRTC.debug.xcconfig"; path = "Target Support Files/Pods-PhonixWebRTC/Pods-PhonixWebRTC.debug.xcconfig"; sourceTree = "<group>"; };
@@ -62,6 +100,64 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0711CA9C246D703F00363416 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0711CAC6246D72A700363416 /* Log.swift */,
+				0711CA9D246D703F00363416 /* Array+Extensions.swift */,
+				0711CA9E246D703F00363416 /* Int+Extensions.swift */,
+				0711CA9F246D703F00363416 /* UIViewController+Extensions.swift */,
+				0711CAA1246D703F00363416 /* UIView+Extensions.swift */,
+				0711CAA2246D703F00363416 /* String+Extensions.swift */,
+				0711CAA3246D703F00363416 /* UIColor+Extensions.swift */,
+				0711CAA4246D703F00363416 /* ActivityIndicator.swift */,
+				0711CAA5246D703F00363416 /* RoundedView.swift */,
+				0711CAA6246D703F00363416 /* Codable+Extensions.swift */,
+				0711CAA7246D703F00363416 /* UITableviewCell+Extension.swift */,
+				0711CAA8246D703F00363416 /* UIStoryboard+Extensions.swift */,
+				0711CAAA246D703F00363416 /* RoundedTextField.swift */,
+				0711CAAB246D703F00363416 /* RoundedLabel.swift */,
+				0711CAAC246D703F00363416 /* FileUtils.swift */,
+				0711CAAD246D703F00363416 /* RoundedButton.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		0711CABF246D706D00363416 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				0711CAC1246D708100363416 /* Presenter */,
+				0711CAC0246D707A00363416 /* Listener */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		0711CAC0246D707A00363416 /* Listener */ = {
+			isa = PBXGroup;
+			children = (
+				1ACFD951246AEC860030DCB5 /* ListenerViewController.swift */,
+				0711CAC4246D712800363416 /* ListenerViewController.storyboard */,
+			);
+			path = Listener;
+			sourceTree = "<group>";
+		};
+		0711CAC1246D708100363416 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				0711CAC8246D74AA00363416 /* PresenterViewController.swift */,
+				0711CAC2246D70AA00363416 /* PresenterViewController.storyboard */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		0711CACA246DD73A00363416 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0711CACB246DD77100363416 /* JoinResponse.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		1A26306F246AA6BA00028303 = {
 			isa = PBXGroup;
 			children = (
@@ -83,11 +179,12 @@
 		1A26307A246AA6BB00028303 /* PhonixWebRTC */ = {
 			isa = PBXGroup;
 			children = (
+				0711CACA246DD73A00363416 /* Models */,
+				0711CABF246D706D00363416 /* UI */,
+				0711CA9C246D703F00363416 /* Extensions */,
 				1A2630B2246ABDD200028303 /* Helper */,
 				1A26307B246AA6BB00028303 /* AppDelegate.swift */,
 				1A26307F246AA6BB00028303 /* ViewController.swift */,
-				1ACFD94F246AEC7F0030DCB5 /* PresenterViewController.swift */,
-				1ACFD951246AEC860030DCB5 /* ListenerViewController.swift */,
 				1A263081246AA6BB00028303 /* Main.storyboard */,
 				1A263087246AA6BF00028303 /* Assets.xcassets */,
 				1A263089246AA6BF00028303 /* LaunchScreen.storyboard */,
@@ -205,7 +302,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0711CAC3246D70AA00363416 /* PresenterViewController.storyboard in Resources */,
 				1A26308B246AA6BF00028303 /* LaunchScreen.storyboard in Resources */,
+				0711CAC5246D712800363416 /* ListenerViewController.storyboard in Resources */,
 				1A263088246AA6BF00028303 /* Assets.xcassets in Resources */,
 				1A263083246AA6BB00028303 /* Main.storyboard in Resources */,
 			);
@@ -261,17 +360,34 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A2630AF246ABDCC00028303 /* WebSocketProvider.swift in Sources */,
+				0711CABE246D703F00363416 /* RoundedButton.swift in Sources */,
+				0711CAC9246D74AA00363416 /* PresenterViewController.swift in Sources */,
 				1A2630AA246ABDCC00028303 /* WebRTCModels.swift in Sources */,
 				1A2630AD246ABDCC00028303 /* SignalingClient.swift in Sources */,
-				1ACFD950246AEC7F0030DCB5 /* PresenterViewController.swift in Sources */,
+				0711CAAE246D703F00363416 /* Array+Extensions.swift in Sources */,
+				0711CAB5246D703F00363416 /* ActivityIndicator.swift in Sources */,
 				1A2630B0246ABDCC00028303 /* NativeWebSocket.swift in Sources */,
 				1A263080246AA6BB00028303 /* ViewController.swift in Sources */,
+				0711CABD246D703F00363416 /* FileUtils.swift in Sources */,
 				1ACFD952246AEC860030DCB5 /* ListenerViewController.swift in Sources */,
 				1A2630B4246ABF5E00028303 /* Message.swift in Sources */,
+				0711CAAF246D703F00363416 /* Int+Extensions.swift in Sources */,
+				0711CAB8246D703F00363416 /* UITableviewCell+Extension.swift in Sources */,
 				1A2630B6246ABF8000028303 /* SessionDescription.swift in Sources */,
+				0711CAB4246D703F00363416 /* UIColor+Extensions.swift in Sources */,
+				0711CABC246D703F00363416 /* RoundedLabel.swift in Sources */,
+				0711CAB2246D703F00363416 /* UIView+Extensions.swift in Sources */,
+				0711CABB246D703F00363416 /* RoundedTextField.swift in Sources */,
+				0711CAB3246D703F00363416 /* String+Extensions.swift in Sources */,
+				0711CACC246DD77100363416 /* JoinResponse.swift in Sources */,
+				0711CAB9246D703F00363416 /* UIStoryboard+Extensions.swift in Sources */,
 				1A2630AB246ABDCC00028303 /* WebRTCClient.swift in Sources */,
+				0711CAB0246D703F00363416 /* UIViewController+Extensions.swift in Sources */,
 				1A26307C246AA6BB00028303 /* AppDelegate.swift in Sources */,
 				1A2630B1246ABDCC00028303 /* StarscreamProvider.swift in Sources */,
+				0711CAC7246D72A700363416 /* Log.swift in Sources */,
+				0711CAB6246D703F00363416 /* RoundedView.swift in Sources */,
+				0711CAB7246D703F00363416 /* Codable+Extensions.swift in Sources */,
 				1A2630A8246ABDCC00028303 /* Config.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,14 +534,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B5Y5BFV894;
+				DEVELOPMENT_TEAM = Y8GQF5LA2N;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PhonixWebRTC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.PhonixWebRTC;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sumitanantwar.PhonixWebRTC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -438,14 +554,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B5Y5BFV894;
+				DEVELOPMENT_TEAM = Y8GQF5LA2N;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PhonixWebRTC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.PhonixWebRTC;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sumitanantwar.PhonixWebRTC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

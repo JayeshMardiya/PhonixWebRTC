@@ -12,7 +12,7 @@ import WebRTC
 protocol SignalClientDelegate: class {
     func signalClientDidConnect(_ signalClient: SignalingClient)
     func signalClientDidDisconnect(_ signalClient: SignalingClient)
-    func signalClient(_ signalClient: SignalingClient, didReceiveRemoteSdp sdp: SDP)
+    func signalClient(_ signalClient: SignalingClient, didReceiveRemoteSdp sdp: RemoteSDP)
     func signalClient(_ signalClient: SignalingClient, didReceiveCandidate candidate: Candidate)
     func signalClient(_ signalClient: SignalingClient, didAcceptListener clientType: String)
     func signalClientList(_ list: [String])
@@ -43,20 +43,18 @@ final class SignalingClient {
     
     func send(sdp rtcSdp: RTCSessionDescription, to client: String) {
         
-        let sdp = SDP(with: self.getClientType(),
-                      sourceId: self.getSourceId(),
-                      destinationId: client,
+        let sdp = RemoteSDP(with: self.getClientType(),
                       rtcSDP: rtcSdp)
         self.send(message: Message.sdp(sdp))
     }
     
     func send(candidate rtcIceCandidate: RTCIceCandidate, to client: String) {
         
-        let candidate = Candidate(with: self.getClientType(),
-                                  sourceId: self.getSourceId(),
-                                  destinationId: client,
-                                  rtcICE: rtcIceCandidate)
-        self.send(message: Message.candidate(candidate))
+//        let candidate = Candidate(with: self.getClientType(),
+//                                  sourceId: self.getSourceId(),
+//                                  destinationId: client,
+//                                  rtcICE: rtcIceCandidate)
+//        self.send(message: Message.candidate(candidate))
     }
     
     func sendSyn() {

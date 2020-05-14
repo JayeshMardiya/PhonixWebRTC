@@ -10,9 +10,9 @@ import Foundation
 import WebRTC
 
 protocol WebRTCClientDelegate: class {
-    func webRTCClient(_ client: WebRTCClient, didDiscoverLocalCandidate candidate: RTCIceCandidate, clientId: String)
-    func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState, clientId: String)
-    func webRTCClient(_ client: WebRTCClient, didReceiveData data: Data, clientId: String)
+    func webRTCClient(_ client: WebRTCClient, didDiscoverLocalCandidate candidate: RTCIceCandidate, clientId: String?)
+    func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState, clientId: String?)
+    func webRTCClient(_ client: WebRTCClient, didReceiveData data: Data, clientId: String?)
 }
 
 final class WebRTCClient: NSObject {
@@ -20,7 +20,7 @@ final class WebRTCClient: NSObject {
     // The `RTCPeerConnectionFactory` is in charge of creating new RTCPeerConnection instances.
     // A new RTCPeerConnection should be created every new call, but the factory is shared.
     private let userType: String
-    private let clientId: String
+    private let clientId: String?
     private static let factory = RTCPeerConnectionFactory()
     
     weak var delegate: WebRTCClientDelegate?
@@ -36,7 +36,7 @@ final class WebRTCClient: NSObject {
         fatalError("WebRTCClient:init is unavailable")
     }
     
-    required init(iceServers: [String], and userType: String, clientId: String) {
+    required init(iceServer: RTCIceServer, userType: String, clientId: String? = nil) {
         
         let config = RTCConfiguration()
         //        config.iceServers = [RTCIceServer(urlStrings: iceServers)]
@@ -50,11 +50,13 @@ final class WebRTCClient: NSObject {
 //                         credential: "xp/rpxLnYM0OM6NJMiXOVCtoGS4TJQcrJUjnFQhaCQQ=")
 //        ]
         
-                config.iceServers = [
-                    RTCIceServer(urlStrings: ["turn:numb.viagenie.ca:3478"],
-                                 username: "kmozcan1@gmail.com",
-                                 credential: "123456")
-                ]
+//        config.iceServers = [
+//            RTCIceServer(urlStrings: ["turn:numb.viagenie.ca:3478"],
+//                         username: "kmozcan1@gmail.com",
+//                         credential: "123456")
+//        ]
+        
+        config.iceServers = [iceServer]
         
         // Unified plan is more superior than planB
         config.sdpSemantics = .unifiedPlan
