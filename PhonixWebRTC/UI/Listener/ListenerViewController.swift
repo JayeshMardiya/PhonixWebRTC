@@ -16,10 +16,11 @@ class ListenerViewController: UIViewController {
     // MARK: - Child Views
     //----------------------------------------------------------------------
     @IBOutlet weak var connectButton: UIButton!
+    @IBOutlet weak var roomNameTextField: UITextField!
     
     let udid: String = "LISTENER" // UIDevice.current.identifierForVendor!.uuidString
     var socket: Socket? = nil
-    var topic: String = "room:party"
+    var topic: String = ""
     var lobbyChannel: Channel!
     
     private let decoder = JSONDecoder()
@@ -61,16 +62,29 @@ class ListenerViewController: UIViewController {
         }
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
     //----------------------------------------------------------------------
     // MARK: - IBActions
     //----------------------------------------------------------------------
     @IBAction func onConnectButtonPressed(_ sender: UIButton) {
         
-        if socket?.isConnected ?? false {
-            disconnectAndLeave()
+        if self.roomNameTextField.text?.isEmpty ?? false {
+            let alertController = UIAlertController(title: "Vox Connect", message: "Enter room name", preferredStyle: .alert)
+
+            alertController.addAction(UIAlertAction(title: "OK", style: .default) { action -> Void in
+                self.roomNameTextField.becomeFirstResponder()
+            })
+            self.present(alertController, animated: true, completion: nil)
         } else {
-            connectAndJoin()
+            self.view.endEditing(true)
+            if socket?.isConnected ?? false {
+                disconnectAndLeave()
+            } else {
+                connectAndJoin()
+            }
         }
     }
     
@@ -95,6 +109,7 @@ class ListenerViewController: UIViewController {
     }
     
     private func connectAndJoin() {
+        topic = "room:\(self.roomNameTextField.text!)"
         let channel = socket?.channel(topic, params: ["role": "listener"])
         
         channel?.delegateOn("status", to: self) { (slf, message) in

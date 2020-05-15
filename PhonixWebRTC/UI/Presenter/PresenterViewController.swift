@@ -16,6 +16,7 @@ class PresenterViewController: UIViewController {
     // MARK: - Child Views
     //----------------------------------------------------------------------
     @IBOutlet weak var connectButton: UIButton!
+    @IBOutlet weak var roomNameTextField: UITextField!
     
     let udid: String = "SPEAKER" // UIDevice.current.identifierForVendor!.uuidString
     var socket: Socket? = nil
@@ -37,6 +38,8 @@ class PresenterViewController: UIViewController {
     // Listener
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.roomNameTextField.becomeFirstResponder()
         
         socket = Socket("https://vowdemo.herokuapp.com/vow_socket", params: ["token": "TOKEN123", "uuid": self.udid])
         // To automatically manage retain cycles, use `delegate*(to:)` methods.
@@ -62,16 +65,29 @@ class PresenterViewController: UIViewController {
         }
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
     //----------------------------------------------------------------------
     // MARK: - IBActions
     //----------------------------------------------------------------------
     @IBAction func onConnectButtonPressed(_ sender: UIButton) {
         
-        if socket?.isConnected ?? false {
-            disconnectAndLeave()
+        if self.roomNameTextField.text?.isEmpty ?? false {
+            let alertController = UIAlertController(title: "Vox Connect", message: "Enter room name", preferredStyle: .alert)
+
+            alertController.addAction(UIAlertAction(title: "OK", style: .default) { action -> Void in
+                self.roomNameTextField.becomeFirstResponder()
+            })
+            self.present(alertController, animated: true, completion: nil)
         } else {
-            connectAndJoin()
+            self.view.endEditing(true)
+            if socket?.isConnected ?? false {
+                disconnectAndLeave()
+            } else {
+                connectAndJoin()
+            }
         }
     }
     
@@ -98,6 +114,7 @@ class PresenterViewController: UIViewController {
     }
     
     private func connectAndJoin() {
+        topic = "room:\(self.roomNameTextField.text!)"
         let channel = socket?.channel(topic, params: ["role": "speaker"])
         
         channel?.delegateOn("status", to: self, callback: { (slf, message) in

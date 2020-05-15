@@ -46,20 +46,30 @@
                                     <action selector="onBackButtonPressed:" destination="eNN-vY-8Hl" eventType="touchUpInside" id="XO0-Vs-FPd"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Room Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W5u-ze-f1U">
+                                <rect key="frame" x="40" y="327" width="334" height="54"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.23529411759999999" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="gZd-As-MPa" firstAttribute="top" secondItem="6US-RY-sAg" secondAttribute="top" constant="12" id="7Ck-x6-6Jy"/>
                             <constraint firstItem="8pP-Bu-Wu5" firstAttribute="leading" secondItem="6US-RY-sAg" secondAttribute="leading" constant="40" id="H61-s4-gfp"/>
                             <constraint firstItem="8pP-Bu-Wu5" firstAttribute="centerY" secondItem="kqI-JW-cA2" secondAttribute="centerY" id="HFP-aG-H54"/>
+                            <constraint firstItem="8pP-Bu-Wu5" firstAttribute="top" secondItem="W5u-ze-f1U" secondAttribute="bottom" constant="40" id="M2Z-u0-3xe"/>
+                            <constraint firstItem="W5u-ze-f1U" firstAttribute="trailing" secondItem="8pP-Bu-Wu5" secondAttribute="trailing" id="UaE-P1-DgO"/>
                             <constraint firstItem="8pP-Bu-Wu5" firstAttribute="centerX" secondItem="kqI-JW-cA2" secondAttribute="centerX" id="WkX-7H-50Y"/>
                             <constraint firstItem="gZd-As-MPa" firstAttribute="leading" secondItem="6US-RY-sAg" secondAttribute="leading" constant="8" id="gG6-4b-T2U"/>
+                            <constraint firstItem="W5u-ze-f1U" firstAttribute="leading" secondItem="8pP-Bu-Wu5" secondAttribute="leading" id="hXd-A1-xJz"/>
+                            <constraint firstItem="W5u-ze-f1U" firstAttribute="height" secondItem="8pP-Bu-Wu5" secondAttribute="height" id="ttB-Qb-HQJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6US-RY-sAg"/>
                     </view>
                     <navigationItem key="navigationItem" id="ZMz-CJ-7PG"/>
                     <connections>
                         <outlet property="connectButton" destination="8pP-Bu-Wu5" id="7hO-Cr-lVW"/>
+                        <outlet property="roomNameTextField" destination="W5u-ze-f1U" id="5LK-Ff-4aO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zlg-Sr-F8X" sceneMemberID="firstResponder"/>
