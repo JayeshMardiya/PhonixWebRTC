@@ -51,7 +51,7 @@ class PresenterViewController: UIViewController {
         }
         
         socket?.logger = { msg in
-            print("LOG:", msg)
+//            print("LOG:", msg)
         }
     }
     
@@ -120,7 +120,12 @@ class PresenterViewController: UIViewController {
     }
     
     private func handlePayload(_ payload: [String : Any]) {
-        
+        if let offer = try? OfferMessage(dictionary: payload) {
+            print(offer)
+        }
+        if let candidate = try? CandidateMessage(dictionary: payload) {
+            print(candidate)
+        }
     }
     
     private func addText(_ message: String) {

@@ -57,7 +57,7 @@ class ListenerViewController: UIViewController {
         }
         
         socket?.logger = { msg in
-//            print("LOG:", msg)
+            //            print("LOG:", msg)
         }
     }
     
@@ -94,25 +94,16 @@ class ListenerViewController: UIViewController {
         self.lobbyChannel.push("listener_msg", payload: payload)
     }
     
-    private func sendMessage() {
-        self.lobbyChannel.push("listener_msg", payload: ["message" : "Message From Speaker"])
-            .delegateReceive("ok", to: self) { (slf, message) in
-                print(message)
-        }.delegateReceive("error", to: self) { (slf, message) in
-            print(message)
-        }
-    }
-    
     private func connectAndJoin() {
         let channel = socket?.channel(topic, params: ["role": "listener"])
-
+        
         channel?.delegateOn("status", to: self) { (slf, message) in
             slf.handlePayload(message.payload)
         }
         
         channel?.delegateOn("speaker_msg", to: self) { (slf, message) in
             let payload = message.payload as [String : Any]
-                
+            
             if let answer = payload["answer"] {
                 print(answer)
             }
@@ -122,9 +113,9 @@ class ListenerViewController: UIViewController {
         self.lobbyChannel.join()
             .delegateReceive("ok", to: self) { (slf, message) in
                 slf.handlePayload(message.payload)
-            }.delegateReceive("error", to: self) { (slf, message) in
-                slf.addText("Failed to join channel: \(message.payload)")
-            }
+        }.delegateReceive("error", to: self) { (slf, message) in
+            slf.addText("Failed to join channel: \(message.payload)")
+        }
         
         self.socket?.connect()
     }
@@ -154,10 +145,13 @@ class ListenerViewController: UIViewController {
             self.webRtcClient.delegate = self
             
             self.webRtcClient.offer { [unowned self] offer in
-                let sdp = RemoteSDP(with: "listener",
-                              rtcSDP: offer)
-                let payload = ["offer" : sdp]
-                self.sendPayload(payload)
+                let sdp = SDP(rtcSDP: offer)
+                if let data = try? self.encoder.encode(sdp),
+                    let dataStr = String(data: data, encoding: .utf8) {
+                    
+                    let payload = ["offer" : dataStr]
+                    self.sendPayload(payload)
+                }
             }
         }
     }
@@ -168,8 +162,12 @@ class ListenerViewController: UIViewController {
     
     private func sendCandidate(_ candidate: RTCIceCandidate) {
         let can = Candidate(rtcICE: candidate)
-        let payload = ["candidate" : can]
-        self.sendPayload(payload)
+        if let data = try? self.encoder.encode(can),
+            let dataStr = String(data: data, encoding: .utf8) {
+            
+            let payload = ["candidate" : dataStr]
+            self.sendPayload(payload)
+        }
     }
 }
 

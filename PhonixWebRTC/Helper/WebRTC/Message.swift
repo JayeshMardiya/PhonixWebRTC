@@ -53,9 +53,9 @@ extension Encodable {
     }
 }
 
-enum Message {
+enum RemoteMessage {
     case handshake(Syn)
-    case sdp(RemoteSDP)
+    case sdp(SDP)
     case candidate(Candidate)
 }
 
@@ -65,36 +65,33 @@ struct Syn: Codable {
     let sourceId: String
 }
 
-struct RemoteSDP: Codable {
+struct SDP: Codable {
     
-//    let clientType: String
     let sdp: String
-    let sdpType: String
+    let sdpType: SdpType
     
-    init(with clientType: String,
-         rtcSDP: RTCSessionDescription) {
+    init(rtcSDP: RTCSessionDescription) {
         
-//        self.clientType = clientType
         self.sdp = rtcSDP.sdp
         
         switch rtcSDP.type {
-        case .answer: self.sdpType = "answer"
-        case .offer: self.sdpType = "offer"
-        case .prAnswer: self.sdpType = "prAnswer"
-        @unknown default:
-            fatalError("Invalid RTCSDPType")
+            case .answer: self.sdpType = .answer
+            case .offer: self.sdpType = .offer
+            case .prAnswer: self.sdpType = .prAnswer
+            @unknown default:
+                fatalError("Invalid RTCSDPType")
         }
     }
     
+    func toDictionary() -> [String : String] {
+        return [
+            "sdp": self.sdp,
+            "sdpType": self.sdpType.rawValue
+        ]
+    }
+    
     func rtcSDP() -> RTCSessionDescription {
-        var type: RTCSdpType = .offer
-        if self.sdpType == "answer" {
-            type = .answer
-        }
-        if self.sdpType == "prAnswer" {
-            type = .prAnswer
-        }
-        return RTCSessionDescription(type: type, sdp: self.sdp)
+        return RTCSessionDescription(type: self.sdpType.rtcSdpType, sdp: self.sdp)
     }
 }
 
@@ -104,13 +101,17 @@ struct Candidate: Codable {
     let sdpMid: String?
     
     init(rtcICE: RTCIceCandidate) {
-        
-//        self.clientType = clientType
-//        self.sourceId = sourceId
-//        self.destinationId = destinationId
         self.sdp = rtcICE.sdp
         self.sdpMLineIndex = rtcICE.sdpMLineIndex
         self.sdpMid = rtcICE.sdpMid
+    }
+    
+    func toDictionary() -> [String : Any] {
+        return [
+            "sdp": self.sdp,
+            "sdpMLineIndex": self.sdpMLineIndex,
+            "sdpMid": self.sdpMid ?? ""
+        ]
     }
     
     func rtcCandidate() -> RTCIceCandidate {
@@ -121,7 +122,7 @@ struct Candidate: Codable {
 
 enum Response {
     case presenterList([String]) // Presenter List
-    case sdp(RemoteSDP)
+    case sdp(SDP)
     case candidate(Candidate)
 }
 
@@ -134,7 +135,7 @@ extension Response: Decodable {
         case "presenter_list":
             self = .presenterList(try container.decode([String].self, forKey: .payload))
         case "sdp":
-            self = .sdp(try container.decode(RemoteSDP.self, forKey: .payload))
+            self = .sdp(try container.decode(SDP.self, forKey: .payload))
         case "ice":
             self = .candidate(try container.decode(Candidate.self, forKey: .payload))
         default:
@@ -151,7 +152,7 @@ extension Response: Decodable {
     }
 }
 
-extension Message: Encodable {
+extension RemoteMessage : Encodable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)

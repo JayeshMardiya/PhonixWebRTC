@@ -27,6 +27,7 @@
 		0711CAC7246D72A700363416 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAC6246D72A700363416 /* Log.swift */; };
 		0711CAC9246D74AA00363416 /* PresenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CAC8246D74AA00363416 /* PresenterViewController.swift */; };
 		0711CACC246DD77100363416 /* JoinResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0711CACB246DD77100363416 /* JoinResponse.swift */; };
+		07D48904246E8CF8004B50EE /* ListenerMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D48903246E8CF8004B50EE /* ListenerMessages.swift */; };
 		1A26307C246AA6BB00028303 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A26307B246AA6BB00028303 /* AppDelegate.swift */; };
 		1A263080246AA6BB00028303 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A26307F246AA6BB00028303 /* ViewController.swift */; };
 		1A263083246AA6BB00028303 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A263081246AA6BB00028303 /* Main.storyboard */; };
@@ -35,7 +36,6 @@
 		1A2630A8246ABDCC00028303 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A26309A246ABDCB00028303 /* Config.swift */; };
 		1A2630AA246ABDCC00028303 /* WebRTCModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A26309C246ABDCB00028303 /* WebRTCModels.swift */; };
 		1A2630AB246ABDCC00028303 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A26309D246ABDCB00028303 /* WebRTCClient.swift */; };
-		1A2630AD246ABDCC00028303 /* SignalingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A26309F246ABDCB00028303 /* SignalingClient.swift */; };
 		1A2630AF246ABDCC00028303 /* WebSocketProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2630A2246ABDCB00028303 /* WebSocketProvider.swift */; };
 		1A2630B0246ABDCC00028303 /* NativeWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2630A3246ABDCB00028303 /* NativeWebSocket.swift */; };
 		1A2630B1246ABDCC00028303 /* StarscreamProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2630A4246ABDCB00028303 /* StarscreamProvider.swift */; };
@@ -66,6 +66,7 @@
 		0711CAC6246D72A700363416 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		0711CAC8246D74AA00363416 /* PresenterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenterViewController.swift; sourceTree = "<group>"; };
 		0711CACB246DD77100363416 /* JoinResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinResponse.swift; sourceTree = "<group>"; };
+		07D48903246E8CF8004B50EE /* ListenerMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerMessages.swift; sourceTree = "<group>"; };
 		1A263078246AA6BB00028303 /* PhonixWebRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhonixWebRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A26307B246AA6BB00028303 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A26307F246AA6BB00028303 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -76,7 +77,6 @@
 		1A26309A246ABDCB00028303 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		1A26309C246ABDCB00028303 /* WebRTCModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebRTCModels.swift; sourceTree = "<group>"; };
 		1A26309D246ABDCB00028303 /* WebRTCClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
-		1A26309F246ABDCB00028303 /* SignalingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalingClient.swift; sourceTree = "<group>"; };
 		1A2630A2246ABDCB00028303 /* WebSocketProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketProvider.swift; sourceTree = "<group>"; };
 		1A2630A3246ABDCB00028303 /* NativeWebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeWebSocket.swift; sourceTree = "<group>"; };
 		1A2630A4246ABDCB00028303 /* StarscreamProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarscreamProvider.swift; sourceTree = "<group>"; };
@@ -154,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				0711CACB246DD77100363416 /* JoinResponse.swift */,
+				07D48903246E8CF8004B50EE /* ListenerMessages.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -201,7 +202,6 @@
 				1A26309A246ABDCB00028303 /* Config.swift */,
 				1A26309C246ABDCB00028303 /* WebRTCModels.swift */,
 				1A26309D246ABDCB00028303 /* WebRTCClient.swift */,
-				1A26309F246ABDCB00028303 /* SignalingClient.swift */,
 			);
 			path = WebRTC;
 			sourceTree = "<group>";
@@ -363,10 +363,10 @@
 				0711CABE246D703F00363416 /* RoundedButton.swift in Sources */,
 				0711CAC9246D74AA00363416 /* PresenterViewController.swift in Sources */,
 				1A2630AA246ABDCC00028303 /* WebRTCModels.swift in Sources */,
-				1A2630AD246ABDCC00028303 /* SignalingClient.swift in Sources */,
 				0711CAAE246D703F00363416 /* Array+Extensions.swift in Sources */,
 				0711CAB5246D703F00363416 /* ActivityIndicator.swift in Sources */,
 				1A2630B0246ABDCC00028303 /* NativeWebSocket.swift in Sources */,
+				07D48904246E8CF8004B50EE /* ListenerMessages.swift in Sources */,
 				1A263080246AA6BB00028303 /* ViewController.swift in Sources */,
 				0711CABD246D703F00363416 /* FileUtils.swift in Sources */,
 				1ACFD952246AEC860030DCB5 /* ListenerViewController.swift in Sources */,
