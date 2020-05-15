@@ -18,3 +18,13 @@ extension Array {
         return nil
     }
 }
+
+extension Dictionary {
+    func item(for key: Key) -> Value? {
+        if self.keys.contains(key) {
+            return self[key]
+        }
+        
+        return nil
+    }
+}

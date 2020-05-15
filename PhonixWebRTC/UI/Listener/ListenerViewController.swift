@@ -102,11 +102,7 @@ class ListenerViewController: UIViewController {
         }
         
         channel?.delegateOn("speaker_msg", to: self) { (slf, message) in
-            let payload = message.payload as [String : Any]
-            
-            if let answer = payload["answer"] {
-                print(answer)
-            }
+            slf.handlePayload(message.payload)
         }
         
         self.lobbyChannel = channel
@@ -122,15 +118,25 @@ class ListenerViewController: UIViewController {
     
     private func handlePayload(_ payload: [String : Any]) {
         
-        if let response = payload["response"] as? [String : Any],
-            let joinResponse = try? JoinResponse(dictionary: response) {
+        if let joinResponse = try? ListenerJoinResponse(dictionary: payload) {
             
             self.twilioCreds = joinResponse.twilio_creds
             if joinResponse.speaker_status.status == "online" {
                 self.joinStream()
             }
-            print(joinResponse)
             
+            return
+        }
+        if let answerMessage = try? AnswerMessage(dictionary: payload) {
+            self.webRtcClient?.set(remoteSdp: answerMessage.answer.rtcSDP()) { (error) in
+                if error != nil {
+                    print("Answer Accepted")
+                }
+            }
+            return
+        }
+        if let candidate = try? CandidateMessage(dictionary: payload) {
+            self.webRtcClient?.set(remoteCandidate: candidate.candidate.rtcCandidate())
             return
         }
         
@@ -139,8 +145,7 @@ class ListenerViewController: UIViewController {
     
     private func joinStream() {
         if let creds = self.twilioCreds {
-            let servers = creds.ice_servers.map { $0.url }
-            let iceServer = RTCIceServer(urlStrings: servers, username: creds.username, credential: creds.password)
+            let iceServer = RTCIceServer(urlStrings: creds.servers(), username: creds.username, credential: creds.password)
             self.webRtcClient = WebRTCClient(iceServer: iceServer, userType: "listener")
             self.webRtcClient.delegate = self
             

@@ -29,13 +29,31 @@ struct OfferMessage : Codable {
     }
 }
 
+struct AnswerMessage : Codable {
+    let answer: SDP
+    
+    struct Proxy : Codable {
+        let answer: String
+    }
+    
+    init(dictionary: [String: Any]) throws {
+        let decoder = JSONDecoder()
+        let proxy = try decoder.decode(Proxy.self, from: JSONSerialization.data(withJSONObject: dictionary))
+        
+        let data = try proxy.answer.data(using: .utf8) ?? throw_(Errors.parsingError)
+        let answer = try decoder.decode(SDP.self, from: data)
+        
+        self.answer = answer
+    }
+}
+
 struct CandidateMessage : Codable {
     let candidate: Candidate
-    let src: String
+    let src: String?
     
     struct Proxy : Codable {
         let candidate: String
-        let src: String
+        let src: String?
     }
     
     init(dictionary: [String: Any]) throws {
