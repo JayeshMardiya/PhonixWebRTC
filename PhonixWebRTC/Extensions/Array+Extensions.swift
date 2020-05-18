@@ -20,7 +20,7 @@ extension Array {
 }
 
 extension Dictionary {
-    func item(for key: Key) -> Value? {
+    func value(forKey key: Key) -> Value? {
         if self.keys.contains(key) {
             return self[key]
         }

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,6 +28,17 @@
                                     <action selector="onBackButtonPressed:" destination="ewc-nc-dh2" eventType="touchUpInside" id="kX2-tn-CNx"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BNq-In-uGb">
+                                <rect key="frame" x="207" y="227" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Room Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gMQ-Wc-UPb">
+                                <rect key="frame" x="40" y="327" width="334" height="54"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffF-GT-o8A">
                                 <rect key="frame" x="40" y="421" width="334" height="54"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -46,29 +58,27 @@
                                     <action selector="onConnectButtonPressed:" destination="ewc-nc-dh2" eventType="touchUpInside" id="nDY-b0-PZc"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Room Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gMQ-Wc-UPb">
-                                <rect key="frame" x="40" y="327" width="334" height="54"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.23529411759999999" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="gMQ-Wc-UPb" firstAttribute="leading" secondItem="ffF-GT-o8A" secondAttribute="leading" id="3ew-4T-3gF"/>
                             <constraint firstItem="ffF-GT-o8A" firstAttribute="centerY" secondItem="Vea-2g-dM5" secondAttribute="centerY" id="PJv-BS-uDs"/>
                             <constraint firstItem="Q7H-uh-uac" firstAttribute="top" secondItem="qpC-1I-xIb" secondAttribute="top" constant="12" id="YLS-8h-5TB"/>
+                            <constraint firstItem="BNq-In-uGb" firstAttribute="centerX" secondItem="qpC-1I-xIb" secondAttribute="centerX" id="gBW-Cp-13u"/>
                             <constraint firstItem="ffF-GT-o8A" firstAttribute="centerX" secondItem="Vea-2g-dM5" secondAttribute="centerX" id="qyH-mh-TUt"/>
                             <constraint firstItem="gMQ-Wc-UPb" firstAttribute="height" secondItem="ffF-GT-o8A" secondAttribute="height" id="sGT-kX-Mvg"/>
                             <constraint firstItem="ffF-GT-o8A" firstAttribute="top" secondItem="gMQ-Wc-UPb" secondAttribute="bottom" constant="40" id="uMZ-jM-BTx"/>
                             <constraint firstItem="ffF-GT-o8A" firstAttribute="leading" secondItem="qpC-1I-xIb" secondAttribute="leading" constant="40" id="vBn-mI-TEi"/>
                             <constraint firstItem="Q7H-uh-uac" firstAttribute="leading" secondItem="qpC-1I-xIb" secondAttribute="leading" constant="8" id="wR4-mZ-eEi"/>
                             <constraint firstItem="gMQ-Wc-UPb" firstAttribute="trailing" secondItem="ffF-GT-o8A" secondAttribute="trailing" id="y1T-mG-2Wa"/>
+                            <constraint firstItem="gMQ-Wc-UPb" firstAttribute="top" secondItem="BNq-In-uGb" secondAttribute="bottom" constant="100" id="zsB-fs-ruL"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="qpC-1I-xIb"/>
                     </view>
                     <navigationItem key="navigationItem" id="QRm-Nh-i9A"/>
                     <connections>
                         <outlet property="connectButton" destination="ffF-GT-o8A" id="5I7-qm-NdP"/>
+                        <outlet property="connectionStatusLable" destination="BNq-In-uGb" id="n5j-pJ-oX6"/>
                         <outlet property="roomNameTextField" destination="gMQ-Wc-UPb" id="KrN-H8-jXi"/>
                     </connections>
                 </viewController>

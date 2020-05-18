@@ -17,6 +17,7 @@ class PresenterViewController: UIViewController {
     //----------------------------------------------------------------------
     @IBOutlet weak var connectButton: UIButton!
     @IBOutlet weak var roomNameTextField: UITextField!
+    @IBOutlet var listenerCountLabel: UILabel!
     
     let udid: String = "SPEAKER" // UIDevice.current.identifierForVendor!.uuidString
     var socket: Socket? = nil
@@ -74,7 +75,7 @@ class PresenterViewController: UIViewController {
         
         if self.roomNameTextField.text?.isEmpty ?? false {
             let alertController = UIAlertController(title: "Vox Connect", message: "Enter room name", preferredStyle: .alert)
-
+            
             alertController.addAction(UIAlertAction(title: "OK", style: .default) { action -> Void in
                 self.roomNameTextField.becomeFirstResponder()
             })
@@ -99,6 +100,10 @@ class PresenterViewController: UIViewController {
     //----------------------------------------------------------------------
     private func disconnectAndLeave() {
         // Be sure the leave the channel or call socket.remove(lobbyChannel)
+        for client in self.clientMap.values {
+            client.disconnect()
+        }
+        self.clientMap.removeAll()
         lobbyChannel.leave()
         socket?.disconnect {
             self.addText("Socket Disconnected")
@@ -156,7 +161,7 @@ class PresenterViewController: UIViewController {
             return
         }
         if let candidate = try? CandidateMessage(dictionary: payload) {
-            if let client = self.clientMap.item(for: candidate.src!) {
+            if let client = self.clientMap.value(forKey: candidate.src!) {
                 client.set(remoteCandidate: candidate.candidate.rtcCandidate())
             }
             return
@@ -164,7 +169,7 @@ class PresenterViewController: UIViewController {
     }
     
     private func sendAnswer(to listener: String) {
-        if let client = self.clientMap.item(for: listener) {
+        if let client = self.clientMap.value(forKey: listener) {
             client.answer { answer in
                 let sdp = SDP(rtcSDP: answer)
                 if let data = try? self.encoder.encode(sdp),
@@ -187,6 +192,10 @@ class PresenterViewController: UIViewController {
         }
     }
     
+    private func updateListenerCount() {
+        self.listenerCountLabel.text = "Listener Count: \(self.clientMap.count)"
+    }
+    
     private func addText(_ message: String) {
         print(message)
     }
@@ -201,16 +210,39 @@ extension PresenterViewController : WebRTCClientDelegate {
     
     func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState, clientId: String?) {
         
+        switch state {
+            case .closed, .disconnected, .failed:
+                DispatchQueue.main.async {
+                    if let strClientId = clientId {
+                        self.clientMap.value(forKey: strClientId)?.disconnect()
+                        self.clientMap.removeValue(forKey: strClientId)
+                    }
+                    
+                    self.updateListenerCount()
+                }
+            
+            case .connected:
+                DispatchQueue.main.async {
+                    self.updateListenerCount()
+                }
+            
+            default:
+                print("default")
+        }
+        
         if state == .closed ||
             state == .disconnected ||
             state == .failed {
             
             DispatchQueue.main.async {
                 if let strClientId = clientId {
-                    self.clientMap[strClientId]?.disconnect()
+                    self.clientMap.value(forKey: strClientId)?.disconnect()
                     self.clientMap.removeValue(forKey: strClientId)
                 }
             }
+        }
+        if state == .connected {
+            
         }
     }
     

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,6 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Room Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W5u-ze-f1U">
+                                <rect key="frame" x="40" y="327" width="334" height="54"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8pP-Bu-Wu5">
                                 <rect key="frame" x="40" y="421" width="334" height="54"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -46,15 +52,17 @@
                                     <action selector="onBackButtonPressed:" destination="eNN-vY-8Hl" eventType="touchUpInside" id="XO0-Vs-FPd"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Room Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W5u-ze-f1U">
-                                <rect key="frame" x="40" y="327" width="334" height="54"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ListenerCount: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B6T-iE-m5U">
+                                <rect key="frame" x="109" y="197" width="196.5" height="30"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.23529411759999999" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="gZd-As-MPa" firstAttribute="top" secondItem="6US-RY-sAg" secondAttribute="top" constant="12" id="7Ck-x6-6Jy"/>
+                            <constraint firstItem="W5u-ze-f1U" firstAttribute="top" secondItem="B6T-iE-m5U" secondAttribute="bottom" constant="100" id="AC0-xv-nmc"/>
                             <constraint firstItem="8pP-Bu-Wu5" firstAttribute="leading" secondItem="6US-RY-sAg" secondAttribute="leading" constant="40" id="H61-s4-gfp"/>
                             <constraint firstItem="8pP-Bu-Wu5" firstAttribute="centerY" secondItem="kqI-JW-cA2" secondAttribute="centerY" id="HFP-aG-H54"/>
                             <constraint firstItem="8pP-Bu-Wu5" firstAttribute="top" secondItem="W5u-ze-f1U" secondAttribute="bottom" constant="40" id="M2Z-u0-3xe"/>
@@ -63,12 +71,14 @@
                             <constraint firstItem="gZd-As-MPa" firstAttribute="leading" secondItem="6US-RY-sAg" secondAttribute="leading" constant="8" id="gG6-4b-T2U"/>
                             <constraint firstItem="W5u-ze-f1U" firstAttribute="leading" secondItem="8pP-Bu-Wu5" secondAttribute="leading" id="hXd-A1-xJz"/>
                             <constraint firstItem="W5u-ze-f1U" firstAttribute="height" secondItem="8pP-Bu-Wu5" secondAttribute="height" id="ttB-Qb-HQJ"/>
+                            <constraint firstItem="B6T-iE-m5U" firstAttribute="centerX" secondItem="6US-RY-sAg" secondAttribute="centerX" id="waU-gh-822"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6US-RY-sAg"/>
                     </view>
                     <navigationItem key="navigationItem" id="ZMz-CJ-7PG"/>
                     <connections>
                         <outlet property="connectButton" destination="8pP-Bu-Wu5" id="7hO-Cr-lVW"/>
+                        <outlet property="listenerCountLabel" destination="B6T-iE-m5U" id="cNu-ha-3tp"/>
                         <outlet property="roomNameTextField" destination="W5u-ze-f1U" id="5LK-Ff-4aO"/>
                     </connections>
                 </viewController>

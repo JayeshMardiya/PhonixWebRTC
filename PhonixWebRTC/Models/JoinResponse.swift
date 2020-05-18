@@ -11,6 +11,10 @@ import Foundation
 struct SpeakerStatus : Codable {
     let status: String
     let uuId: String?
+    
+    init(dictionary: [String: Any]) throws {
+        self = try JSONDecoder().decode(SpeakerStatus.self, from: JSONSerialization.data(withJSONObject: dictionary))
+    }
 }
 
 struct TwilioIceServer : Codable {

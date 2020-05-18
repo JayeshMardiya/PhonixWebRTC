@@ -15,6 +15,7 @@ class ListenerViewController: UIViewController {
     //----------------------------------------------------------------------
     // MARK: - Child Views
     //----------------------------------------------------------------------
+    @IBOutlet var connectionStatusLable: UILabel!
     @IBOutlet weak var connectButton: UIButton!
     @IBOutlet weak var roomNameTextField: UITextField!
     
@@ -51,7 +52,7 @@ class ListenerViewController: UIViewController {
         socket?.delegateOnClose(to: self) { (slf) in
             slf.addText("Socket Closed")
             slf.connectButton.setTitle("Connect", for: .normal)
-            slf.webRtcClient.disconnect()
+            slf.webRtcClient?.disconnect()
         }
         
         socket?.delegateOnError(to: self) { (slf, error) in
@@ -134,14 +135,18 @@ class ListenerViewController: UIViewController {
     }
     
     private func handlePayload(_ payload: [String : Any]) {
-        
+        if let speakerStatus = try? SpeakerStatus(dictionary: payload) {
+            if speakerStatus.status == "online" {
+                self.joinStream()
+            }
+        }
         if let joinResponse = try? ListenerJoinResponse(dictionary: payload) {
             
             self.twilioCreds = joinResponse.twilio_creds
             if joinResponse.speaker_status.status == "online" {
                 self.joinStream()
-            } else if joinResponse.speaker_status.status == "offline" {
-                self.disconnectAndLeave()
+            } else {
+                self.connectionStatusLable.text = "Waiting for the Presenter..."
             }
             
             return
@@ -179,7 +184,7 @@ class ListenerViewController: UIViewController {
             }
         }
     }
-    
+
     private func addText(_ message: String) {
         print(message)
     }
@@ -203,14 +208,34 @@ extension ListenerViewController : WebRTCClientDelegate {
     
     func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState, clientId: String?) {
      
+        switch state {
+            case .closed, .disconnected, .failed:
+                DispatchQueue.main.async {
+                    client.disconnect()
+                    self.disconnectAndLeave()
+                    
+                    self.connectionStatusLable.text = ""
+                }
+            
+            case .connected:
+                DispatchQueue.main.async {
+                self.connectionStatusLable.text = "Listening..."
+            }
+            
+            case .checking:
+                DispatchQueue.main.async {
+                    self.connectionStatusLable.text = "Connecting..."
+            }
+            
+            default:
+                print("default")
+        }
+        
         if state == .closed ||
             state == .disconnected ||
             state == .failed {
             
-            DispatchQueue.main.async {
-                client.disconnect()
-                self.disconnectAndLeave()
-            }
+            
         }
     }
     
