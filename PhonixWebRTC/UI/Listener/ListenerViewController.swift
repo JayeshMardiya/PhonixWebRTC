@@ -51,6 +51,7 @@ class ListenerViewController: UIViewController {
         socket?.delegateOnClose(to: self) { (slf) in
             slf.addText("Socket Closed")
             slf.connectButton.setTitle("Connect", for: .normal)
+            slf.webRtcClient.disconnect()
         }
         
         socket?.delegateOnError(to: self) { (slf, error) in
@@ -101,6 +102,7 @@ class ListenerViewController: UIViewController {
         lobbyChannel.leave()
         socket?.disconnect {
             self.addText("Socket Disconnected")
+            self.webRtcClient.disconnect()
         }
     }
     
@@ -138,6 +140,8 @@ class ListenerViewController: UIViewController {
             self.twilioCreds = joinResponse.twilio_creds
             if joinResponse.speaker_status.status == "online" {
                 self.joinStream()
+            } else if joinResponse.speaker_status.status == "offline" {
+                self.disconnectAndLeave()
             }
             
             return
@@ -198,7 +202,16 @@ extension ListenerViewController : WebRTCClientDelegate {
     }
     
     func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState, clientId: String?) {
-        
+     
+        if state == .closed ||
+            state == .disconnected ||
+            state == .failed {
+            
+            DispatchQueue.main.async {
+                client.disconnect()
+                self.disconnectAndLeave()
+            }
+        }
     }
     
     func webRTCClient(_ client: WebRTCClient, didReceiveData data: Data, clientId: String?) {

@@ -27,12 +27,10 @@ class PresenterViewController: UIViewController {
     
     // WebRTC
     private let config = Config.default
-    private var isListening: Bool = false
     
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()
     
-    private var webRtcClient: WebRTCClient!
     private var twilioCreds: TwilioCreds!
     
     // Listener
@@ -203,6 +201,17 @@ extension PresenterViewController : WebRTCClientDelegate {
     
     func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState, clientId: String?) {
         
+        if state == .closed ||
+            state == .disconnected ||
+            state == .failed {
+            
+            DispatchQueue.main.async {
+                if let strClientId = clientId {
+                    self.clientMap[strClientId]?.disconnect()
+                    self.clientMap.removeValue(forKey: strClientId)
+                }
+            }
+        }
     }
     
     func webRTCClient(_ client: WebRTCClient, didReceiveData data: Data, clientId: String?) {
