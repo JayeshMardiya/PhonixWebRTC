@@ -54,7 +54,6 @@ extension Encodable {
 }
 
 enum RemoteMessage {
-    case handshake(Syn)
     case sdp(SDP)
     case candidate(Candidate)
 }
@@ -65,10 +64,12 @@ struct Syn: Codable {
     let sourceId: String
 }
 
-struct SDP: Codable {
-    
+struct SDP {
     let sdp: String
     let sdpType: SdpType
+}
+
+extension SDP {
     
     init(rtcSDP: RTCSessionDescription) {
         
@@ -93,12 +94,70 @@ struct SDP: Codable {
     func rtcSDP() -> RTCSessionDescription {
         return RTCSessionDescription(type: self.sdpType.rtcSdpType, sdp: self.sdp)
     }
+    
+    init(dictionary: Dictionary<String, Any>) throws {
+        let sdp = dictionary["sdp"] as! String
+        let sdpType = dictionary["sdpType"] as! String
+        
+        self.init(sdp: sdp, sdpType: .offer)
+    }
 }
 
-struct Candidate: Codable {
+struct AnswerSDP {
+    let sdp: String
+    let sdpType: SdpType
+}
+
+extension AnswerSDP {
+    
+    init(rtcSDP: RTCSessionDescription) {
+        
+        self.sdp = rtcSDP.sdp
+        
+        switch rtcSDP.type {
+            case .answer: self.sdpType = .answer
+            case .offer: self.sdpType = .offer
+            case .prAnswer: self.sdpType = .prAnswer
+            @unknown default:
+                fatalError("Invalid RTCSDPType")
+        }
+    }
+    
+    func toDictionary() -> [String : String] {
+        return [
+            "sdp": self.sdp,
+            "sdpType": self.sdpType.rawValue
+        ]
+    }
+    
+    func rtcSDP() -> RTCSessionDescription {
+        return RTCSessionDescription(type: self.sdpType.rtcSdpType, sdp: self.sdp)
+    }
+    
+    init(dictionary: Dictionary<String, Any>) throws {
+        let sdp = dictionary["sdp"] as! String
+//        let sdpType = dictionary["sdpType"] as! String
+        
+        self.init(sdp: sdp, sdpType: .answer)
+    }
+}
+
+struct Candidate {
+    
     let sdp: String
     let sdpMLineIndex: Int32
     let sdpMid: String?
+}
+
+extension Candidate {
+    
+    init(dictionary: Dictionary<String, Any>) throws {
+        let sdpMLineIndex = dictionary["sdpMLineIndex"] as! Int32
+        let sdp = dictionary["sdp"] as! String
+        let sdpMid = dictionary["sdpMid"] as? String
+        
+        self.init(sdp: sdp, sdpMLineIndex: sdpMLineIndex, sdpMid: sdpMid)
+    }
     
     init(rtcICE: RTCIceCandidate) {
         self.sdp = rtcICE.sdp
@@ -120,57 +179,26 @@ struct Candidate: Codable {
     }
 }
 
-enum Response {
-    case presenterList([String]) // Presenter List
-    case sdp(SDP)
-    case candidate(Candidate)
-}
-
-extension Response: Decodable {
+extension RemoteMessage {
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decode(String.self, forKey: .type)
-        switch type {
-        case "presenter_list":
-            self = .presenterList(try container.decode([String].self, forKey: .payload))
-        case "sdp":
-            self = .sdp(try container.decode(SDP.self, forKey: .payload))
-        case "ice":
-            self = .candidate(try container.decode(Candidate.self, forKey: .payload))
-        default:
-            throw DecodeError.unknownType
-        }
+    init(dictionary: [String: Any]) throws {
+        self = try RemoteMessage(dictionary: dictionary)
     }
     
-    enum DecodeError: Error {
-        case unknownType
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case type, payload
-    }
-}
-
-extension RemoteMessage : Encodable {
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
+    func toDictionary() -> [String : Any] {
+        
         switch self {
-        case .handshake(let syn):
-            try container.encode("handshake", forKey: .type)
-            try container.encode(syn, forKey: .payload)
         case .sdp(let sdp):
-            try container.encode("sdp", forKey: .type)
-            try container.encode(sdp, forKey: .payload)
+            return [
+                "type": "sdp",
+                "payload": sdp.toDictionary()
+            ]
         case .candidate(let candidate):
-            try container.encode("ice", forKey: .type)
-            try container.encode(candidate, forKey: .payload)
+            return [
+                "type": "candidate",
+                "payload": candidate.toDictionary()
+            ]
         }
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case type, payload
     }
 }
 

@@ -8,63 +8,56 @@
 
 import Foundation
 
-struct OfferMessage : Codable {
-    let offer: SDP
+struct OfferMessage {
+    let payload: SDP
     let src: String
+    let type: String
+}
+
+extension OfferMessage {
     
-    struct Proxy : Codable {
-        let offer: String
-        let src: String
-    }
-    
-    init(dictionary: [String: Any]) throws {
-        let decoder = JSONDecoder()
-        let proxy = try decoder.decode(Proxy.self, from: JSONSerialization.data(withJSONObject: dictionary))
-        
-        let data = try proxy.offer.data(using: .utf8) ?? throw_(Errors.parsingError)
-        let offer = try decoder.decode(SDP.self, from: data)
-        
-        self.offer = offer
-        self.src = proxy.src
+    init(dictionary: Dictionary<String, Any>) throws {
+        let payload = dictionary["payload"] as! [String: Any]
+        let src = dictionary["src"] as! String
+        let type = dictionary["type"] as! String
+        let value = try SDP(dictionary: payload)
+        self.init(payload: value, src: src, type: type)
     }
 }
 
-struct AnswerMessage : Codable {
-    let answer: SDP
+struct AnswerMessage {
+    let to: String
+    let sdp: AnswerSDP
+    let sdpType: SdpType
+}
+
+extension AnswerMessage {
     
-    struct Proxy : Codable {
-        let answer: String
-    }
-    
-    init(dictionary: [String: Any]) throws {
-        let decoder = JSONDecoder()
-        let proxy = try decoder.decode(Proxy.self, from: JSONSerialization.data(withJSONObject: dictionary))
-        
-        let data = try proxy.answer.data(using: .utf8) ?? throw_(Errors.parsingError)
-        let answer = try decoder.decode(SDP.self, from: data)
-        
-        self.answer = answer
+    init(dictionary: Dictionary<String, Any>) throws {
+        let to = dictionary["to"] as! String
+        let sdp = dictionary["sdp"] as! String
+//        let sdpType = dictionary["sdpType"] as! String
+
+        let answerSDP = AnswerSDP(sdp: sdp, sdpType: .answer)
+        self.init(to: to, sdp: answerSDP, sdpType: .answer)
     }
 }
 
-struct CandidateMessage : Codable {
+struct CandidateMessage {
     let candidate: Candidate
+    let type: String
     let src: String?
+}
+
+extension CandidateMessage {
     
-    struct Proxy : Codable {
-        let candidate: String
-        let src: String?
-    }
-    
-    init(dictionary: [String: Any]) throws {
-        let decoder = JSONDecoder()
-        let proxy = try decoder.decode(Proxy.self, from: JSONSerialization.data(withJSONObject: dictionary))
+    init(dictionary: Dictionary<String, Any>) throws {
         
-        let data = try proxy.candidate.data(using: .utf8) ?? throw_(Errors.parsingError)
-        let candidate = try decoder.decode(Candidate.self, from: data)
-        
-        self.candidate = candidate
-        self.src = proxy.src
+        let payload = dictionary["payload"] as! [String: Any]
+        let src = dictionary["src"] as! String
+        let type = dictionary["type"] as! String
+        let value = try Candidate(dictionary: payload)
+        self.init(candidate: value, type: type, src: src)
     }
 }
 

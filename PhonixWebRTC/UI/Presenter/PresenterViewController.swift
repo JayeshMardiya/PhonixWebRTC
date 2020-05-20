@@ -145,26 +145,30 @@ class PresenterViewController: UIViewController {
             self.twilioCreds = joinResponse.twilio_creds
             return
         }
-        if let offerMessage = try? OfferMessage(dictionary: payload) {
-            if let creds = self.twilioCreds {
-                let iceServer = RTCIceServer(urlStrings: creds.servers(),
-                                             username: creds.username,
-                                             credential: creds.password)
-                
-                let rtcClient = WebRTCClient(iceServer: iceServer, userType: "presenter", clientId: offerMessage.src)
-                rtcClient.delegate = self
-                self.clientMap[offerMessage.src] = rtcClient
-                rtcClient.set(remoteSdp: offerMessage.offer.rtcSDP()) { error in
-                    self.sendAnswer(to: offerMessage.src)
+        
+        if payload["type"] as? String == "sdp" {
+            if let offerMessage = try? OfferMessage(dictionary: payload) {
+                if let creds = self.twilioCreds {
+                    let iceServer = RTCIceServer(urlStrings: creds.servers(),
+                                                 username: creds.username,
+                                                 credential: creds.password)
+                    
+                    let rtcClient = WebRTCClient(iceServer: iceServer, userType: "presenter", clientId: offerMessage.src)
+                    rtcClient.delegate = self
+                    self.clientMap[offerMessage.src] = rtcClient
+                    rtcClient.set(remoteSdp: offerMessage.payload.rtcSDP()) { error in
+                        self.sendAnswer(to: offerMessage.src)
+                    }
                 }
+                return
             }
-            return
-        }
-        if let candidate = try? CandidateMessage(dictionary: payload) {
-            if let client = self.clientMap.value(forKey: candidate.src!) {
-                client.set(remoteCandidate: candidate.candidate.rtcCandidate())
+        } else if payload["type"] as? String == "candidate" {
+            if let candidate = try? CandidateMessage(dictionary: payload) {
+                if let client = self.clientMap.value(forKey: candidate.src!) {
+                    client.set(remoteCandidate: candidate.candidate.rtcCandidate())
+                }
+                return
             }
-            return
         }
     }
     
@@ -172,24 +176,14 @@ class PresenterViewController: UIViewController {
         if let client = self.clientMap.value(forKey: listener) {
             client.answer { answer in
                 let sdp = SDP(rtcSDP: answer)
-                if let data = try? self.encoder.encode(sdp),
-                    let dataStr = String(data: data, encoding: .utf8) {
-                    
-                    let payload = ["answer" : dataStr]
-                    self.sendPayload(payload, to: listener)
-                }
+                self.sendPayload(sdp.toDictionary(), to: listener)
             }
         }
     }
     
     private func sendCandidate(_ candidate: RTCIceCandidate, to listener: String) {
         let can = Candidate(rtcICE: candidate)
-        if let data = try? self.encoder.encode(can),
-            let dataStr = String(data: data, encoding: .utf8) {
-            
-            let payload = ["candidate" : dataStr]
-            self.sendPayload(payload, to: listener)
-        }
+        self.sendPayload(can.toDictionary(), to: listener)
     }
     
     private func updateListenerCount() {
@@ -228,21 +222,6 @@ extension PresenterViewController : WebRTCClientDelegate {
             
             default:
                 print("default")
-        }
-        
-        if state == .closed ||
-            state == .disconnected ||
-            state == .failed {
-            
-            DispatchQueue.main.async {
-                if let strClientId = clientId {
-                    self.clientMap.value(forKey: strClientId)?.disconnect()
-                    self.clientMap.removeValue(forKey: strClientId)
-                }
-            }
-        }
-        if state == .connected {
-            
         }
     }
     

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+/*
 struct SignalingMessage: Codable {
     let type: String
     let sessionDescription: SDP?
@@ -28,3 +28,4 @@ struct SignalingMessage: Codable {
         self.allowRecording = allowRecording
     }
 }
+*/

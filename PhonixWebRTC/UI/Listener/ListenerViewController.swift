@@ -75,7 +75,7 @@ class ListenerViewController: UIViewController {
         
         if self.roomNameTextField.text?.isEmpty ?? false {
             let alertController = UIAlertController(title: "Vox Connect", message: "Enter room name", preferredStyle: .alert)
-
+            
             alertController.addAction(UIAlertAction(title: "OK", style: .default) { action -> Void in
                 self.roomNameTextField.becomeFirstResponder()
             })
@@ -107,8 +107,8 @@ class ListenerViewController: UIViewController {
         }
     }
     
-    private func sendPayload(_ payload: [String : Any]) {
-        self.lobbyChannel.push("listener_msg", payload: payload)
+    private func sendMessage(_ message: RemoteMessage) {
+        self.lobbyChannel.push("listener_msg", payload: message.toDictionary())
     }
     
     private func connectAndJoin() {
@@ -151,17 +151,20 @@ class ListenerViewController: UIViewController {
             
             return
         }
-        if let answerMessage = try? AnswerMessage(dictionary: payload) {
-            self.webRtcClient?.set(remoteSdp: answerMessage.answer.rtcSDP()) { (error) in
-                if error != nil {
-                    print("Answer Accepted")
+    
+        if payload["status"] as? String != "offline" && payload["status"] as? String != "online" {
+            if let answerMessage = try? AnswerMessage(dictionary: payload) {
+                self.webRtcClient?.set(remoteSdp: answerMessage.sdp.rtcSDP()) { (error) in
+                    if error != nil {
+                        print("Answer Accepted")
+                    }
                 }
+                return
             }
-            return
-        }
-        if let candidate = try? CandidateMessage(dictionary: payload) {
-            self.webRtcClient?.set(remoteCandidate: candidate.candidate.rtcCandidate())
-            return
+            if let candidate = try? CandidateMessage(dictionary: payload) {
+                self.webRtcClient?.set(remoteCandidate: candidate.candidate.rtcCandidate())
+                return
+            }
         }
         
         print(payload)
@@ -175,28 +178,20 @@ class ListenerViewController: UIViewController {
             
             self.webRtcClient.offer { [unowned self] offer in
                 let sdp = SDP(rtcSDP: offer)
-                if let data = try? self.encoder.encode(sdp),
-                    let dataStr = String(data: data, encoding: .utf8) {
-                    
-                    let payload = ["offer" : dataStr]
-                    self.sendPayload(payload)
-                }
+                let message = RemoteMessage.sdp(sdp)
+                self.sendMessage(message)
             }
         }
     }
-
+    
     private func addText(_ message: String) {
         print(message)
     }
     
     private func sendCandidate(_ candidate: RTCIceCandidate) {
         let can = Candidate(rtcICE: candidate)
-        if let data = try? self.encoder.encode(can),
-            let dataStr = String(data: data, encoding: .utf8) {
-            
-            let payload = ["candidate" : dataStr]
-            self.sendPayload(payload)
-        }
+        let message = RemoteMessage.candidate(can)
+        self.sendMessage(message)
     }
 }
 
@@ -207,35 +202,28 @@ extension ListenerViewController : WebRTCClientDelegate {
     }
     
     func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState, clientId: String?) {
-     
+        
         switch state {
-            case .closed, .disconnected, .failed:
-                DispatchQueue.main.async {
-                    client.disconnect()
-                    self.disconnectAndLeave()
-                    
-                    self.connectionStatusLable.text = ""
-                }
+        case .closed, .disconnected, .failed:
+            DispatchQueue.main.async {
+                client.disconnect()
+                self.disconnectAndLeave()
+                
+                self.connectionStatusLable.text = ""
+            }
             
-            case .connected:
-                DispatchQueue.main.async {
+        case .connected:
+            DispatchQueue.main.async {
                 self.connectionStatusLable.text = "Listening..."
             }
             
-            case .checking:
-                DispatchQueue.main.async {
-                    self.connectionStatusLable.text = "Connecting..."
+        case .checking:
+            DispatchQueue.main.async {
+                self.connectionStatusLable.text = "Connecting..."
             }
             
-            default:
-                print("default")
-        }
-        
-        if state == .closed ||
-            state == .disconnected ||
-            state == .failed {
-            
-            
+        default:
+            print("default")
         }
     }
     
