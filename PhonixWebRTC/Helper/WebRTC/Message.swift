@@ -34,8 +34,6 @@ struct MessageData: Codable {
     
     var name: String?
     var message: String?
-    var timeStamp: String?
-    var isTranslated: Bool?
 
     init() {
 
