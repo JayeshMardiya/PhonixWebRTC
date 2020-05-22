@@ -92,6 +92,11 @@ class ListenerViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func onSendMessageButtonPressed(_ sender: UIButton) {
+        
+        self.sendMessage()
+    }
+    
     //----------------------------------------------------------------------
     // MARK: - Private
     //----------------------------------------------------------------------
@@ -184,6 +189,19 @@ class ListenerViewController: UIViewController {
         let can = Candidate(rtcICE: candidate)
         let message = RemoteMessage.candidate(can)
         self.sendMessage(message)
+    }
+    
+    private func sendMessage() {
+
+        var newMessage = MessageData()
+        newMessage.name = "Jayesh"
+        newMessage.message = "Test Message"
+        self.sendTextMessage(message: newMessage)
+    }
+    
+    private func sendTextMessage(message: MessageData) {
+        
+        self.webRtcClient.sendTextMessage(message: message)
     }
 }
 

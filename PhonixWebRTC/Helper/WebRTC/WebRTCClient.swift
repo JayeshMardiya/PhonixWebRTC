@@ -28,8 +28,8 @@ final class WebRTCClient: NSObject {
     private let rtcAudioSession =  RTCAudioSession.sharedInstance()
     private let audioQueue = DispatchQueue(label: "audio")
     private let mediaConstrains = [kRTCMediaConstraintsOfferToReceiveAudio: kRTCMediaConstraintsValueTrue]
-    private var localDataChannel: RTCDataChannel?
     private var remoteDataChannel: RTCDataChannel?
+    private var dataChannel: RTCDataChannel?
     
     @available(*, unavailable)
     override init() {
@@ -133,10 +133,8 @@ final class WebRTCClient: NSObject {
         }
         
         // Data
-        if let dataChannel = createDataChannel() {
-            dataChannel.delegate = self
-            self.localDataChannel = dataChannel
-        }
+        self.dataChannel = self.createDataChannel()
+        self.dataChannel?.delegate = self
     }
     
     private func createAudioTrack() -> RTCAudioTrack {
@@ -148,12 +146,11 @@ final class WebRTCClient: NSObject {
     
     // MARK: Data Channels
     private func createDataChannel() -> RTCDataChannel? {
-        let config = RTCDataChannelConfiguration()
-        guard let dataChannel = self.peerConnection.dataChannel(forLabel: "WebRTCData", configuration: config) else {
-            debugPrint("Warning: Couldn't create data channel.")
-            return nil
-        }
-        return dataChannel
+        let dataChannelConfig = RTCDataChannelConfiguration()
+        dataChannelConfig.channelId = 0
+        
+        let _dataChannel = self.peerConnection.dataChannel(forLabel: "dataChannel", configuration: dataChannelConfig)
+        return _dataChannel!
     }
     
     func sendData(_ data: Data) {
@@ -164,6 +161,23 @@ final class WebRTCClient: NSObject {
     func disconnect() {
         self.peerConnection.close()
         self.peerConnection.stopRtcEventLog()
+    }
+    
+    func sendTextMessage(message: MessageData) {
+        
+        if let dictionaryToSend = try? message.asDictionary() {
+
+            let terminatorString = "\r\n"
+
+            if let jsonData = try? JSONSerialization.data(withJSONObject: dictionaryToSend, options: .prettyPrinted) {
+                let jsonString: NSString = String(data: jsonData, encoding: .utf8)! as NSString
+                let stringToSend = "\(jsonString)\(terminatorString)"
+                let messageData = stringToSend.data(using: .utf8)!
+
+                let buffer = RTCDataBuffer(data: messageData, isBinary: false)
+                self.remoteDataChannel?.sendData(buffer)
+            }
+        }
     }
 }
 
@@ -268,5 +282,9 @@ extension WebRTCClient: RTCDataChannelDelegate {
     
     func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
         self.delegate?.webRTCClient(self, didReceiveData: buffer.data, clientId: self.clientId)
+    }
+    
+    func dataChannel(_ dataChannel: RTCDataChannel, didChangeBufferedAmount amount: UInt64) {
+        print(amount)
     }
 }

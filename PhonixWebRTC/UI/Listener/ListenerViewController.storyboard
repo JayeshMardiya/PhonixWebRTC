@@ -58,15 +58,37 @@
                                     <action selector="onConnectButtonPressed:" destination="ewc-nc-dh2" eventType="touchUpInside" id="nDY-b0-PZc"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kjt-uK-xcy">
+                                <rect key="frame" x="40" y="501" width="334" height="54"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="54" id="fSY-cX-7q2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                <state key="normal" title="Send Message">
+                                    <color key="titleColor" red="0.1960784314" green="0.23921568630000001" blue="0.51372549020000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="27"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onSendMessageButtonPressed:" destination="ewc-nc-dh2" eventType="touchUpInside" id="fnI-Mt-WAK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.23529411759999999" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="gMQ-Wc-UPb" firstAttribute="leading" secondItem="ffF-GT-o8A" secondAttribute="leading" id="3ew-4T-3gF"/>
+                            <constraint firstItem="kjt-uK-xcy" firstAttribute="trailing" secondItem="ffF-GT-o8A" secondAttribute="trailing" id="BNa-jX-XDG"/>
+                            <constraint firstItem="kjt-uK-xcy" firstAttribute="top" secondItem="ffF-GT-o8A" secondAttribute="bottom" constant="26" id="NpP-KE-3BF"/>
                             <constraint firstItem="ffF-GT-o8A" firstAttribute="centerY" secondItem="Vea-2g-dM5" secondAttribute="centerY" id="PJv-BS-uDs"/>
                             <constraint firstItem="Q7H-uh-uac" firstAttribute="top" secondItem="qpC-1I-xIb" secondAttribute="top" constant="12" id="YLS-8h-5TB"/>
                             <constraint firstItem="BNq-In-uGb" firstAttribute="centerX" secondItem="qpC-1I-xIb" secondAttribute="centerX" id="gBW-Cp-13u"/>
                             <constraint firstItem="ffF-GT-o8A" firstAttribute="centerX" secondItem="Vea-2g-dM5" secondAttribute="centerX" id="qyH-mh-TUt"/>
                             <constraint firstItem="gMQ-Wc-UPb" firstAttribute="height" secondItem="ffF-GT-o8A" secondAttribute="height" id="sGT-kX-Mvg"/>
+                            <constraint firstItem="kjt-uK-xcy" firstAttribute="leading" secondItem="ffF-GT-o8A" secondAttribute="leading" id="tqc-A3-TAK"/>
                             <constraint firstItem="ffF-GT-o8A" firstAttribute="top" secondItem="gMQ-Wc-UPb" secondAttribute="bottom" constant="40" id="uMZ-jM-BTx"/>
                             <constraint firstItem="ffF-GT-o8A" firstAttribute="leading" secondItem="qpC-1I-xIb" secondAttribute="leading" constant="40" id="vBn-mI-TEi"/>
                             <constraint firstItem="Q7H-uh-uac" firstAttribute="leading" secondItem="qpC-1I-xIb" secondAttribute="leading" constant="8" id="wR4-mZ-eEi"/>

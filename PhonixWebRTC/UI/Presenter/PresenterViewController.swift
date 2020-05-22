@@ -226,5 +226,26 @@ extension PresenterViewController : WebRTCClientDelegate {
     
     func webRTCClient(_ client: WebRTCClient, didReceiveData data: Data, clientId: String?) {
         
+        DispatchQueue.main.async {
+            let recievedDataString = String(data: data, encoding: .utf8)!
+            let decryptedStringData: Data = recievedDataString.data(using: String.Encoding.utf8)!
+
+            do {
+                let jsonDecoder = JSONDecoder()
+                let message = try jsonDecoder.decode(MessageData.self, from: decryptedStringData)
+                print("Message : \(message)")
+                
+                let alertController = UIAlertController(title: message.name, message: message.message, preferredStyle: .alert)
+
+                alertController.addAction(UIAlertAction(title: "OK", style: .default)
+                { action -> Void in
+                  // Put your code here
+                })
+                self.present(alertController, animated: true, completion: nil)
+                
+            } catch let error as NSError {
+                print(error)
+            }
+        }
     }
 }

@@ -21,6 +21,27 @@ enum SdpType: String, Codable {
     }
 }
 
+struct MessageData: Codable {
+    
+    var name: String?
+    var message: String?
+    
+    init() {
+        
+    }
+}
+
+extension Encodable {
+    func asDictionary() throws -> [String: Any] {
+        let data = try JSONEncoder().encode(self)
+        guard let dictionary = try JSONSerialization.jsonObject(with: data,
+                                                                options: .allowFragments) as? [String: Any] else {
+                                                                    throw NSError()
+        }
+        return dictionary
+    }
+}
+
 struct SDP : Codable {
     let sdp: String
     let sdpType: SdpType
