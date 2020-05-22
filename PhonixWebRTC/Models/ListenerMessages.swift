@@ -27,7 +27,7 @@ extension OfferMessage {
 
 struct AnswerMessage {
     let to: String
-    let sdp: AnswerSDP
+    let sdp: SDP
     let sdpType: SdpType
 }
 
@@ -38,7 +38,7 @@ extension AnswerMessage {
         let sdp = dictionary["sdp"] as! String
 //        let sdpType = dictionary["sdpType"] as! String
 
-        let answerSDP = AnswerSDP(sdp: sdp, sdpType: .answer)
+        let answerSDP = SDP(sdp: sdp, sdpType: .answer)
         self.init(to: to, sdp: answerSDP, sdpType: .answer)
     }
 }

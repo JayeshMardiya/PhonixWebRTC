@@ -19,7 +19,7 @@ class ListenerViewController: UIViewController {
     @IBOutlet weak var connectButton: UIButton!
     @IBOutlet weak var roomNameTextField: UITextField!
     
-    let udid: String = "LISTENER" // UIDevice.current.identifierForVendor!.uuidString
+    let udid: String = UIDevice.current.identifierForVendor!.uuidString
     var socket: Socket? = nil
     var topic: String = ""
     var lobbyChannel: Channel!
@@ -28,9 +28,6 @@ class ListenerViewController: UIViewController {
     private let encoder = JSONEncoder()
     
     // WebRTC
-    private let config = Config.default
-    private var isListening: Bool = false
-    
     private var webRtcClient: WebRTCClient!
     
     private var twilioCreds: TwilioCreds!
@@ -148,26 +145,21 @@ class ListenerViewController: UIViewController {
             } else {
                 self.connectionStatusLable.text = "Waiting for the Presenter..."
             }
+            return
+        }
+        if let sdpResponse = try? SdpResponse(dictionary: payload) {
+           
+            self.webRtcClient.set(remoteSdp: sdpResponse.payload.rtcSDP()) { error in
+                print("Answer accepted")
+            }
+            return
+        }
+        if let candidateResponse = try? CandidateResponse(dictionary: payload) {
+            
+            self.webRtcClient.set(remoteCandidate: candidateResponse.payload.rtcCandidate())
             
             return
         }
-    
-        if payload["status"] as? String != "offline" && payload["status"] as? String != "online" {
-            if let answerMessage = try? AnswerMessage(dictionary: payload) {
-                self.webRtcClient?.set(remoteSdp: answerMessage.sdp.rtcSDP()) { (error) in
-                    if error != nil {
-                        print("Answer Accepted")
-                    }
-                }
-                return
-            }
-            if let candidate = try? CandidateMessage(dictionary: payload) {
-                self.webRtcClient?.set(remoteCandidate: candidate.candidate.rtcCandidate())
-                return
-            }
-        }
-        
-        print(payload)
     }
     
     private func joinStream() {

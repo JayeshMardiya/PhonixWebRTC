@@ -9,62 +9,19 @@
 import UIKit
 import WebRTC
 
-enum MessageType: String, Codable {
-    case message
-    case votingAnswer
-    case votingData
-    case finishedVotingResult
-    case setup
-}
-
-struct SessionData: Codable {
+enum SdpType: String, Codable {
+    case offer, prAnswer, answer
     
-    var streamName: String?
-    var localRecording: Bool?
-    var allowRecording: Bool?
-    var remoteStream: Bool?
-    var passcode: String?
-
-    init() {
-
-    }
-}
-
-struct MessageData: Codable {
-    
-    var name: String?
-    var message: String?
-    var timeStamp: String?
-    var isTranslated: Bool?
-
-    init() {
-
-    }
-}
-
-extension Encodable {
-    func asDictionary() throws -> [String: Any] {
-        let data = try JSONEncoder().encode(self)
-        guard let dictionary = try JSONSerialization.jsonObject(with: data,
-                                                                options: .allowFragments) as? [String: Any] else {
-            throw NSError()
+    var rtcSdpType: RTCSdpType {
+        switch self {
+            case .offer:    return .offer
+            case .answer:   return .answer
+            case .prAnswer: return .prAnswer
         }
-        return dictionary
     }
 }
 
-enum RemoteMessage {
-    case sdp(SDP)
-    case candidate(Candidate)
-}
-
-struct Syn: Codable {
-    
-    let clientType: String
-    let sourceId: String
-}
-
-struct SDP {
+struct SDP : Codable {
     let sdp: String
     let sdpType: SdpType
 }
@@ -95,55 +52,14 @@ extension SDP {
         return RTCSessionDescription(type: self.sdpType.rtcSdpType, sdp: self.sdp)
     }
     
-    init(dictionary: Dictionary<String, Any>) throws {
-        let sdp = dictionary["sdp"] as! String
-        let sdpType = dictionary["sdpType"] as! String
-        
-        self.init(sdp: sdp, sdpType: .offer)
+    init(dictionary: [String: Any]) throws {
+        self = try JSONDecoder().decode(
+            SDP.self, from: JSONSerialization.data(withJSONObject: dictionary)
+        )
     }
 }
 
-struct AnswerSDP {
-    let sdp: String
-    let sdpType: SdpType
-}
-
-extension AnswerSDP {
-    
-    init(rtcSDP: RTCSessionDescription) {
-        
-        self.sdp = rtcSDP.sdp
-        
-        switch rtcSDP.type {
-            case .answer: self.sdpType = .answer
-            case .offer: self.sdpType = .offer
-            case .prAnswer: self.sdpType = .prAnswer
-            @unknown default:
-                fatalError("Invalid RTCSDPType")
-        }
-    }
-    
-    func toDictionary() -> [String : String] {
-        return [
-            "sdp": self.sdp,
-            "sdpType": self.sdpType.rawValue
-        ]
-    }
-    
-    func rtcSDP() -> RTCSessionDescription {
-        return RTCSessionDescription(type: self.sdpType.rtcSdpType, sdp: self.sdp)
-    }
-    
-    init(dictionary: Dictionary<String, Any>) throws {
-        let sdp = dictionary["sdp"] as! String
-//        let sdpType = dictionary["sdpType"] as! String
-        
-        self.init(sdp: sdp, sdpType: .answer)
-    }
-}
-
-struct Candidate {
-    
+struct Candidate : Codable {
     let sdp: String
     let sdpMLineIndex: Int32
     let sdpMid: String?
@@ -151,12 +67,10 @@ struct Candidate {
 
 extension Candidate {
     
-    init(dictionary: Dictionary<String, Any>) throws {
-        let sdpMLineIndex = dictionary["sdpMLineIndex"] as! Int32
-        let sdp = dictionary["sdp"] as! String
-        let sdpMid = dictionary["sdpMid"] as? String
-        
-        self.init(sdp: sdp, sdpMLineIndex: sdpMLineIndex, sdpMid: sdpMid)
+    init(dictionary: [String: Any]) throws {
+        self = try JSONDecoder().decode(
+            Candidate.self, from: JSONSerialization.data(withJSONObject: dictionary)
+        )
     }
     
     init(rtcICE: RTCIceCandidate) {
@@ -174,16 +88,16 @@ extension Candidate {
     }
     
     func rtcCandidate() -> RTCIceCandidate {
-        
         return RTCIceCandidate(sdp: self.sdp, sdpMLineIndex: self.sdpMLineIndex, sdpMid: sdpMid)
     }
 }
 
+enum RemoteMessage {
+    case sdp(SDP)
+    case candidate(Candidate)
+}
+
 extension RemoteMessage {
-    
-    init(dictionary: [String: Any]) throws {
-        self = try RemoteMessage(dictionary: dictionary)
-    }
     
     func toDictionary() -> [String : Any] {
         
@@ -199,6 +113,28 @@ extension RemoteMessage {
                 "payload": candidate.toDictionary()
             ]
         }
+    }
+}
+
+struct SdpResponse : Codable {
+    let src: String?
+    let payload: SDP
+    
+    init(dictionary: [String: Any]) throws {
+        self = try JSONDecoder().decode(
+            SdpResponse.self, from: JSONSerialization.data(withJSONObject: dictionary)
+        )
+    }
+}
+
+struct CandidateResponse : Codable {
+    let src: String?
+    let payload: Candidate
+    
+    init(dictionary: [String: Any]) throws {
+        self = try JSONDecoder().decode(
+            CandidateResponse.self, from: JSONSerialization.data(withJSONObject: dictionary)
+        )
     }
 }
 

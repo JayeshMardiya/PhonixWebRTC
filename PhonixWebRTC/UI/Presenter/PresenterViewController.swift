@@ -19,7 +19,7 @@ class PresenterViewController: UIViewController {
     @IBOutlet weak var roomNameTextField: UITextField!
     @IBOutlet var listenerCountLabel: UILabel!
     
-    let udid: String = "SPEAKER" // UIDevice.current.identifierForVendor!.uuidString
+    let udid: String = UIDevice.current.identifierForVendor!.uuidString
     var socket: Socket? = nil
     var topic: String = "room:party"
     var lobbyChannel: Channel!
@@ -27,8 +27,6 @@ class PresenterViewController: UIViewController {
     private var clientMap: [String: WebRTCClient] = [:]
     
     // WebRTC
-    private let config = Config.default
-    
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()
     
@@ -110,10 +108,10 @@ class PresenterViewController: UIViewController {
         }
     }
     
-    private func sendPayload(_ payload: [String : Any], to listener: String) {
-        var message = payload
-        message["to"] = listener
-        self.lobbyChannel.push("speaker_msg", payload: message)
+    private func message(_ message: RemoteMessage, to listener: String) {
+        var payload = message.toDictionary()
+        payload["to"] = listener
+        self.lobbyChannel.push("speaker_msg", payload: payload)
     }
     
     private func connectAndJoin() {
@@ -145,30 +143,29 @@ class PresenterViewController: UIViewController {
             self.twilioCreds = joinResponse.twilio_creds
             return
         }
-        
-        if payload["type"] as? String == "sdp" {
-            if let offerMessage = try? OfferMessage(dictionary: payload) {
-                if let creds = self.twilioCreds {
-                    let iceServer = RTCIceServer(urlStrings: creds.servers(),
-                                                 username: creds.username,
-                                                 credential: creds.password)
-                    
-                    let rtcClient = WebRTCClient(iceServer: iceServer, userType: "presenter", clientId: offerMessage.src)
-                    rtcClient.delegate = self
-                    self.clientMap[offerMessage.src] = rtcClient
-                    rtcClient.set(remoteSdp: offerMessage.payload.rtcSDP()) { error in
-                        self.sendAnswer(to: offerMessage.src)
-                    }
+        if let sdpResponse = try? SdpResponse(dictionary: payload) {
+            
+            if let creds = self.twilioCreds,
+                let src = sdpResponse.src {
+                let iceServer = RTCIceServer(urlStrings: creds.servers(),
+                                             username: creds.username,
+                                             credential: creds.password)
+                
+                let rtcClient = WebRTCClient(iceServer: iceServer, userType: "presenter", clientId: src)
+                rtcClient.delegate = self
+                self.clientMap[src] = rtcClient
+                rtcClient.set(remoteSdp: sdpResponse.payload.rtcSDP()) { error in
+                    self.sendAnswer(to: src)
                 }
-                return
             }
-        } else if payload["type"] as? String == "candidate" {
-            if let candidate = try? CandidateMessage(dictionary: payload) {
-                if let client = self.clientMap.value(forKey: candidate.src!) {
-                    client.set(remoteCandidate: candidate.candidate.rtcCandidate())
-                }
-                return
+            return
+        }
+        if let candidateResponse = try? CandidateResponse(dictionary: payload) {
+            
+            if let client = self.clientMap.value(forKey: candidateResponse.src!) {
+                client.set(remoteCandidate: candidateResponse.payload.rtcCandidate())
             }
+            return
         }
     }
     
@@ -176,14 +173,16 @@ class PresenterViewController: UIViewController {
         if let client = self.clientMap.value(forKey: listener) {
             client.answer { answer in
                 let sdp = SDP(rtcSDP: answer)
-                self.sendPayload(sdp.toDictionary(), to: listener)
+                let message = RemoteMessage.sdp(sdp)
+                self.message(message, to: listener)
             }
         }
     }
     
     private func sendCandidate(_ candidate: RTCIceCandidate, to listener: String) {
         let can = Candidate(rtcICE: candidate)
-        self.sendPayload(can.toDictionary(), to: listener)
+        let message = RemoteMessage.candidate(can)
+        self.message(message, to: listener)
     }
     
     private func updateListenerCount() {
